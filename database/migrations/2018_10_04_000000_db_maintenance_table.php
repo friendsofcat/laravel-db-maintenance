@@ -14,7 +14,8 @@ class DbMaintenanceTable extends Migration
     {
         Schema::create('maintenance', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->integer('created_at');
+            $table->integer('updated_at');
             $table->boolean('status');
             $table->integer('retry_after')
                 ->default(60);

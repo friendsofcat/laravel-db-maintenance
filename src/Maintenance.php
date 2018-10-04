@@ -40,6 +40,9 @@ class Maintenance
         $this->connection = $connection;
     }
 
+    /**
+     * @return bool
+     */
     public function up()
     {
         if ($this->isUp()) {
@@ -54,15 +57,21 @@ class Maintenance
             })
             ->update([
                 'status' => false,
-                'updated_at' => Carbon::now(),
+                'updated_at' => $this->nowTimestamp(),
             ]);
     }
 
+    /**
+     * @return bool
+     */
     public function isUp()
     {
         return !$this->getLatest()->status;
     }
 
+    /**
+     * @return bool
+     */
     public function down()
     {
         if ($this->isDown()) {
@@ -71,7 +80,7 @@ class Maintenance
 
         $this->reset();
 
-        $now = Carbon::now();
+        $now = $this->nowTimestamp();
 
         return $this->getTableBuilder()->insert([
             'created_at' => $now,
@@ -80,6 +89,9 @@ class Maintenance
         ]);
     }
 
+    /**
+     * @return bool
+     */
     public function isDown()
     {
         return (bool) $this->getLatest()->status;
@@ -104,6 +116,9 @@ class Maintenance
         return $this->latest;
     }
 
+    /**
+     * Reset latest.
+     */
     protected function reset()
     {
         $this->latest = null;
@@ -127,9 +142,12 @@ class Maintenance
         return $this->manager->connection($this->connection);
     }
 
+    /**
+     * @return \stdClass
+     */
     protected function defaultLatest()
     {
-        $now = Carbon::now();
+        $now = $this->nowTimestamp();
 
         $latest = new \stdClass();
         $latest->status = false;
@@ -139,5 +157,13 @@ class Maintenance
         $latest->message = '';
 
         return $latest;
+    }
+
+    /**
+     * @return int
+     */
+    protected function nowTimestamp()
+    {
+        return Carbon::now()->timestamp;
     }
 }
