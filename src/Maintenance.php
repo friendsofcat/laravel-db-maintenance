@@ -70,9 +70,12 @@ class Maintenance
     }
 
     /**
+     * @param string $message
+     * @param int $retry_after
+     *
      * @return bool
      */
-    public function down()
+    public function down($message = '', $retry_after = 60)
     {
         if ($this->isDown()) {
             return false;
@@ -86,6 +89,8 @@ class Maintenance
             'created_at' => $now,
             'updated_at' => $now,
             'status' => true,
+            'retry_after' => $retry_after,
+            'message' => $message,
         ]);
     }
 
