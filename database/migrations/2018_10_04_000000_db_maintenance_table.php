@@ -16,6 +16,9 @@ class DbMaintenanceTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->boolean('status');
+            $table->integer('retry_after')
+                ->default(60);
+            $table->text('message')->default('');
 
             $table->index(['status']);
         });

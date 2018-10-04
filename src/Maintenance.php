@@ -11,12 +11,22 @@ class Maintenance
     /**
      * @var string
      */
+    protected $tableName = 'maintenance';
+
+    /**
+     * @var string
+     */
     protected $connection;
 
     /**
      * @var \Illuminate\Database\ConnectionResolverInterface
      */
     protected $manager;
+
+    /**
+     * @var \stdClass|null
+     */
+    protected $latest;
 
     /**
      * Maintenance constructor.
@@ -36,9 +46,11 @@ class Maintenance
             return false;
         }
 
+        $this->reset();
+
         return (bool) $this->getTableBuilder()
             ->where('id', function ($query) {
-                $query->selectRaw('MAX(id)')->from('maintenance');
+                $query->selectRaw('MAX(id)')->from($this->tableName);
             })
             ->update([
                 'status' => false,
@@ -48,7 +60,7 @@ class Maintenance
 
     public function isUp()
     {
-        return !$this->isDown();
+        return !$this->getLatest()->status;
     }
 
     public function down()
@@ -56,6 +68,8 @@ class Maintenance
         if ($this->isDown()) {
             return false;
         }
+
+        $this->reset();
 
         $now = Carbon::now();
 
@@ -68,11 +82,31 @@ class Maintenance
 
     public function isDown()
     {
-        return $this->getTableBuilder()
-            ->where('status', true)
-            ->orderBy('id', 'desc')
-            ->limit(1)
-            ->exists();
+        return (bool) $this->getLatest()->status;
+    }
+
+    /**
+     * @return \stdClass
+     */
+    public function getLatest()
+    {
+        if (!isset($this->latest)) {
+            $this->latest = $this->getTableBuilder()
+                ->orderBy('id', 'desc')
+                ->limit(1)
+                ->first();
+
+            if (is_null($this->latest)) {
+                $this->latest = $this->defaultLatest();
+            }
+        }
+
+        return $this->latest;
+    }
+
+    protected function reset()
+    {
+        $this->latest = null;
     }
 
     /**
@@ -80,7 +114,7 @@ class Maintenance
      */
     protected function getTableBuilder()
     {
-        return $this->getConnection()->table('maintenance');
+        return $this->getConnection()->table($this->tableName);
     }
 
     /**
@@ -91,5 +125,19 @@ class Maintenance
     protected function getConnection()
     {
         return $this->manager->connection($this->connection);
+    }
+
+    protected function defaultLatest()
+    {
+        $now = Carbon::now();
+
+        $latest = new \stdClass();
+        $latest->status = false;
+        $latest->created_at = $now;
+        $latest->updated_at = $now;
+        $latest->retry_after = 60;
+        $latest->message = '';
+
+        return $latest;
     }
 }
