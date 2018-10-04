@@ -32,24 +32,47 @@ class Maintenance
 
     public function up()
     {
-        return $this->getTableBuilder()->insert([
-            'created_at' => Carbon::now(),
-        ]);
+        if ($this->isUp()) {
+            return false;
+        }
+
+        return (bool) $this->getTableBuilder()
+            ->where('id', function ($query) {
+                $query->selectRaw('MAX(id)')->from('maintenance');
+            })
+            ->update([
+                'status' => false,
+                'updated_at' => Carbon::now(),
+            ]);
     }
 
     public function isUp()
     {
-        return $this->getTableBuilder()->count();
+        return !$this->isDown();
     }
 
     public function down()
     {
-        return $this->getTableBuilder()->delete();
+        if ($this->isDown()) {
+            return false;
+        }
+
+        $now = Carbon::now();
+
+        return $this->getTableBuilder()->insert([
+            'created_at' => $now,
+            'updated_at' => $now,
+            'status' => true,
+        ]);
     }
 
     public function isDown()
     {
-        return !$this->isUp();
+        return $this->getTableBuilder()
+            ->where('status', true)
+            ->orderBy('id', 'desc')
+            ->limit(1)
+            ->exists();
     }
 
     /**

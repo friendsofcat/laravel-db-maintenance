@@ -18,10 +18,11 @@ class DbMaintenanceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->bootMigrations();
         $this->publishesConfiguration();
 
-        $this->app->singleton(Maintenance::class, function () {
-            return new Maintenance();
+        $this->app->singleton(Maintenance::class, function ($app) {
+            return new Maintenance($app->make('db'), config('db_maintenance.connection', 'mysql'));
         });
 
         $this->overrideIlluminateMaintenanceCommands();
@@ -40,6 +41,14 @@ class DbMaintenanceProvider extends ServiceProvider
         $this->app->bind('command.down', function (Application $app) {
             return $app->make(SiteDownCommand::class);
         });
+    }
+
+    /**
+     * Define the migrations.
+     */
+    protected function bootMigrations()
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
     }
 
     /**
