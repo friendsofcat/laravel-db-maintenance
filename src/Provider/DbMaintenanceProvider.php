@@ -2,8 +2,8 @@
 
 namespace FriendsOfCat\LaravelDbMaintenance\Provider;
 
-use FriendsOfCat\LaravelDbMaintenance\Console\SiteDownCommand;
-use FriendsOfCat\LaravelDbMaintenance\Console\SiteUpCommand;
+use FriendsOfCat\LaravelDbMaintenance\Console\DownCommand;
+use FriendsOfCat\LaravelDbMaintenance\Console\UpCommand;
 use FriendsOfCat\LaravelDbMaintenance\Maintenance;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -35,11 +35,11 @@ class DbMaintenanceProvider extends ServiceProvider
 
     protected function overrideIlluminateMaintenanceCommands()
     {
-        $this->app->bind('command.up', function (Application $app) {
-            return $app->make(SiteUpCommand::class);
+        $this->app->extend('command.up', function ($command, Application $app) {
+            return $app->make(UpCommand::class);
         });
-        $this->app->bind('command.down', function (Application $app) {
-            return $app->make(SiteDownCommand::class);
+        $this->app->extend('command.down', function ($command, Application $app) {
+            return $app->make(DownCommand::class);
         });
     }
 

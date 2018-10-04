@@ -14,6 +14,12 @@ class MaintenanceTest extends TestCase
 
     use RefreshDatabase;
 
+    /**
+     * @covers ::up
+     * @covers ::isUp
+     * @covers ::down
+     * @covers ::isDown
+     */
     public function testTogglingMaintenance()
     {
         /** @var Maintenance $maintenance */
