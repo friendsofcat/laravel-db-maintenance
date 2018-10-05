@@ -9,8 +9,8 @@ use Illuminate\Http\Response;
 /**
  * @coversDefaultClass \FriendsOfCat\LaravelDbMaintenance\Provider\DbMaintenanceProvider
  */
-class ProviderIntegrationTest extends TestCase {
-
+class ProviderIntegrationTest extends TestCase
+{
     use RefreshDatabase;
 
     /**
