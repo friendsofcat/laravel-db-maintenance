@@ -27,5 +27,13 @@ class UpCommandTest extends TestCase
         $this->artisan('up');
 
         $this->assertTrue($maintenance->isUp());
+
+        $latest = $maintenance->getLatest();
+
+        $this->assertEquals(0, $latest->status);
+        $this->assertEquals(60, $latest->retry_after);
+        $this->assertSame('', $latest->message);
+
+        $this->assertDatabaseHas('maintenance', ['id' => $latest->id, 'status' => false, 'retry_after' => 60]);
     }
 }
