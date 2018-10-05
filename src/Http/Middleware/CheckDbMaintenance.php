@@ -19,7 +19,8 @@ class CheckDbMaintenance
      *
      * @param \FriendsOfCat\LaravelDbMaintenance\Maintenance $maintenance
      */
-    public function __construct(Maintenance $maintenance) {
+    public function __construct(Maintenance $maintenance)
+    {
         $this->maintenance = $maintenance;
     }
 

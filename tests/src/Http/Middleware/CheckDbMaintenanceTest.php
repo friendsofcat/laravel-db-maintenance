@@ -60,7 +60,8 @@ class CheckDbMaintenanceTest extends TestCase
 
         $middleware = new CheckDbMaintenance($maintenance->reveal());
 
-        $next = function () {};
+        $next = function () {
+        };
 
         $request = Request::create('/');
 

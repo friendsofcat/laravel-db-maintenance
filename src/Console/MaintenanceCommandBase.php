@@ -18,7 +18,8 @@ abstract class MaintenanceCommandBase extends Command
      *
      * @param \FriendsOfCat\LaravelDbMaintenance\Maintenance $maintenance
      */
-    public function __construct(Maintenance $maintenance) {
+    public function __construct(Maintenance $maintenance)
+    {
         parent::__construct();
 
         $this->maintenance = $maintenance;

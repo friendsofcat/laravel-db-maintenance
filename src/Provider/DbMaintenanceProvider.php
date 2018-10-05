@@ -61,4 +61,3 @@ class DbMaintenanceProvider extends ServiceProvider
         ], 'config');
     }
 }
-

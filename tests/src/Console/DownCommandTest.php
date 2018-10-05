@@ -11,7 +11,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class DownCommandTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /**

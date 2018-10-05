@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
  */
 class MaintenanceTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /**
