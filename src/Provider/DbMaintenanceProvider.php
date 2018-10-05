@@ -4,7 +4,9 @@ namespace FriendsOfCat\LaravelDbMaintenance\Provider;
 
 use FriendsOfCat\LaravelDbMaintenance\Console\DownCommand;
 use FriendsOfCat\LaravelDbMaintenance\Console\UpCommand;
+use FriendsOfCat\LaravelDbMaintenance\Http\Middleware\CheckDbMaintenance;
 use FriendsOfCat\LaravelDbMaintenance\Maintenance;
+use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,6 +20,7 @@ class DbMaintenanceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->bootGlobalMiddleware();
         $this->bootMigrations();
         $this->publishesConfiguration();
 
@@ -31,6 +34,14 @@ class DbMaintenanceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../../config/db_maintenance.php', 'db_maintenance');
+    }
+
+    /**
+     * Register global middleware.
+     */
+    protected function bootGlobalMiddleware()
+    {
+        $this->app[KernelContract::class]->prependMiddleware(CheckDbMaintenance::class);
     }
 
     protected function overrideIlluminateMaintenanceCommands()
