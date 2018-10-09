@@ -4,13 +4,14 @@ namespace FriendsOfCat\LaravelDbMaintenance;
 
 use Carbon\Carbon;
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Support\Facades\DB;
 
 class Maintenance
 {
 
-    /**
-     * @var string
-     */
+  /**
+   * @var string
+   */
     protected $tableName = 'maintenance';
 
     /**
@@ -51,14 +52,14 @@ class Maintenance
 
         $this->reset();
 
+        $max = $this->getTableBuilder()->max('id');
+
         return (bool) $this->getTableBuilder()
-            ->where('id', function ($query) {
-                $query->selectRaw('MAX(id)')->from($this->tableName);
-            })
-            ->update([
-                'status' => false,
-                'updated_at' => $this->nowTimestamp(),
-            ]);
+      ->where('id', $max)
+      ->update([
+        'status' => false,
+        'updated_at' => $this->nowTimestamp(),
+      ]);
     }
 
     /**
@@ -86,12 +87,12 @@ class Maintenance
         $now = $this->nowTimestamp();
 
         return $this->getTableBuilder()->insert([
-            'created_at' => $now,
-            'updated_at' => $now,
-            'status' => true,
-            'retry_after' => $retry_after,
-            'message' => $message,
-        ]);
+      'created_at' => $now,
+      'updated_at' => $now,
+      'status' => true,
+      'retry_after' => $retry_after,
+      'message' => $message,
+    ]);
     }
 
     /**
@@ -109,9 +110,9 @@ class Maintenance
     {
         if (!isset($this->latest)) {
             $this->latest = $this->getTableBuilder()
-                ->orderBy('id', 'desc')
-                ->limit(1)
-                ->first();
+        ->orderBy('id', 'desc')
+        ->limit(1)
+        ->first();
 
             if (is_null($this->latest)) {
                 $this->latest = $this->defaultLatest();
