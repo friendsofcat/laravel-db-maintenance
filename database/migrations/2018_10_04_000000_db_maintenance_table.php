@@ -19,7 +19,7 @@ class DbMaintenanceTable extends Migration
             $table->boolean('status');
             $table->integer('retry_after')
                 ->default(60);
-            $table->text('message')->default('');
+            $table->text('message');
 
             $table->index(['status']);
         });
