@@ -1,6 +1,6 @@
 # Laravel Database Maintenance
 
-A Database driven replacement for Laravel's default file base maintenance mode. This allows easy maintenance mode across multiple servers.
+A Database driven replacement for Laravel's default file based maintenance mode. This allows easy maintenance mode across multiple server environments.
 
 ### Installation
 
