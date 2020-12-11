@@ -8,12 +8,15 @@ use FriendsOfCat\LaravelDbMaintenance\Maintenance;
 use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \FriendsOfCat\LaravelDbMaintenance\Http\Middleware\CheckDbMaintenance
  */
 class CheckDbMaintenanceTest extends TestCase
 {
+
+    use ProphecyTrait;
 
     /**
      * @covers ::handle
