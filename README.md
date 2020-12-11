@@ -1,5 +1,7 @@
 # Laravel Database Maintenance
 
+[![Actions Status](https://github.com/friendsofcat/laravel-db-maintenance/workflows/CI/badge.svg)](https://github.com/friendsofcat/laravel-db-maintenance/actions)
+
 A Database driven replacement for Laravel's default file based maintenance mode. This allows easy maintenance mode across multiple server environments.
 
 ### Installation
