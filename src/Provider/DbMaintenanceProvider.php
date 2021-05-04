@@ -68,7 +68,7 @@ class DbMaintenanceProvider extends ServiceProvider
     protected function publishesConfiguration()
     {
         $this->publishes([
-            __DIR__ . '/../../db_maintenance.php' => config_path('db_maintenance.php'),
+            __DIR__ . '/../../config/db_maintenance.php' => config_path('db_maintenance.php'),
         ], 'config');
     }
 }
