@@ -3,7 +3,7 @@
     "description": "Database implementation of app maintenance mode to replace default file maintenance",
     "type": "library",
     "require": {
-        "php": "^7.3",
+        "php": "^7.3|^8.0",
         "laravel/framework": "^5.8|^6.0|^7.0|^8.0"
     },
     "require-dev": {
