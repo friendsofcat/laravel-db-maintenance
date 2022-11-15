@@ -46,10 +46,10 @@ class DbMaintenanceProvider extends ServiceProvider
 
     protected function overrideIlluminateMaintenanceCommands()
     {
-        $this->app->extend('command.up', function ($command, Application $app) {
+        $this->app->extend(\Illuminate\Foundation\Console\UpCommand::class, function ($command, Application $app) {
             return $app->make(UpCommand::class);
         });
-        $this->app->extend('command.down', function ($command, Application $app) {
+        $this->app->extend(\Illuminate\Foundation\Console\DownCommand::class, function ($command, Application $app) {
             return $app->make(DownCommand::class);
         });
     }
