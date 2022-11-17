@@ -2,6 +2,8 @@
 
 namespace FriendsOfCat\LaravelDbMaintenance\Provider;
 
+use Illuminate\Foundation\Console\UpCommand as ArtisanUpCommand;
+use Illuminate\Foundation\Console\DownCommand as ArtisanDownCommand;
 use FriendsOfCat\LaravelDbMaintenance\Console\DownCommand;
 use FriendsOfCat\LaravelDbMaintenance\Console\UpCommand;
 use FriendsOfCat\LaravelDbMaintenance\Http\Middleware\CheckDbMaintenance;
@@ -46,10 +48,10 @@ class DbMaintenanceProvider extends ServiceProvider
 
     protected function overrideIlluminateMaintenanceCommands()
     {
-        $this->app->extend(\Illuminate\Foundation\Console\UpCommand::class, function ($command, Application $app) {
+        $this->app->extend(ArtisanUpCommand::class, function ($command, Application $app) {
             return $app->make(UpCommand::class);
         });
-        $this->app->extend(\Illuminate\Foundation\Console\DownCommand::class, function ($command, Application $app) {
+        $this->app->extend(ArtisanDownCommand::class, function ($command, Application $app) {
             return $app->make(DownCommand::class);
         });
     }
