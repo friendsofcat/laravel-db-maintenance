@@ -3,8 +3,8 @@
 namespace FriendsOfCat\LaravelDbMaintenance\Http\Middleware;
 
 use FriendsOfCat\LaravelDbMaintenance\Maintenance;
-use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 class CheckDbMaintenance
 {
@@ -35,7 +35,7 @@ class CheckDbMaintenance
     {
         if ($this->maintenance->isDown()) {
             $latest = $this->maintenance->getLatest();
-            throw new MaintenanceModeException($latest->created_at, $latest->retry_after, $latest->message);
+            throw new ServiceUnavailableHttpException($latest->retry_after, $latest->message);
         }
 
         return $next($request);
