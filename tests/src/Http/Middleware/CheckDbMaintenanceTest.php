@@ -5,10 +5,10 @@ namespace FriendsOfCat\Tests\LaravelDbMaintenance\Http\Middleware;
 use Carbon\Carbon;
 use FriendsOfCat\LaravelDbMaintenance\Http\Middleware\CheckDbMaintenance;
 use FriendsOfCat\LaravelDbMaintenance\Maintenance;
-use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 /**
  * @coversDefaultClass \FriendsOfCat\LaravelDbMaintenance\Http\Middleware\CheckDbMaintenance
@@ -43,7 +43,7 @@ class CheckDbMaintenanceTest extends TestCase
      */
     public function testHandleWhenDown()
     {
-        $this->expectException(MaintenanceModeException::class);
+        $this->expectException(ServiceUnavailableHttpException::class);
 
         Carbon::setTestNow();
 
